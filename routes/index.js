@@ -16,11 +16,11 @@ const filter = { password: 0 , __v: 0} //过滤器特定语法
 */
 router.post('/register', (req, res) => {
   // 获取参数
-  const { username, password, type } = req.body
+  const { username, password, userType } = req.body
 
   // 处理，判断用户是否存在
 
-  if (/Administrator/i.test(username)) {
+  if (/administrator/.test(username)) {
     // 注册失败
     res.send({
       code: 1, msg: '用户名已存在，或不可使用'
@@ -35,13 +35,14 @@ router.post('/register', (req, res) => {
 
       } else {
         new UserModel({
-          type,
+          userType,
           username,
           password: md5(password)
         })
           .save((err, userDoc) => {
             const data = {
               username,
+              userType,
               _id: userDoc._id,
             }
             // 注册成功后自动登录需要cookie
