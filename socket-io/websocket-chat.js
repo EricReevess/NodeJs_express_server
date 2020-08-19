@@ -35,10 +35,7 @@ const getSocketIdFromCookie = (to_id, io) => {
   for (let key in connectedClient) {
     if (connectedClient[key].handshake.headers.cookie) {
       console.log(connectedClient[key].handshake.headers.cookie)
-      const cookies = connectedClient[key].handshake.headers.cookie
-        .match(/userId=\w*;/).
-        toString().
-        replace(/userId=|;/g,'')
+      const cookies = connectedClient[key].handshake.headers.cookie.match(/userId=\w*/).toString().replace(/userId=/g,'')
       if (cookies === to_id) {
         return connectedClient[key].id
       }
