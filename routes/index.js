@@ -189,7 +189,7 @@ router.get('/get-user-list', (req, res) => {
       msg: '参数错误'
     })
   } else {
-    UserModel.find({ userType, avatar:{ $exists: true }, filter, function (err, userDocs) {
+    UserModel.find({ userType, avatar:{ $exists: true } } , filter, function (err, userDocs) {
       if (userDocs) {
         res.send({
           code: 0,
