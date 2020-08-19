@@ -15,6 +15,7 @@ module.exports = (server) => {
         .save((err, chatMsg) => {
           socket.emit('serverMsg', chatMsg)
           let toSocketId = getSocketIdFromCookie(to_id, io)
+          console.log(toSocketId)
           // 如果对方socketId存在，则说明对方在线
           if (toSocketId) {
             io.sockets.connected[toSocketId].emit('serverMsg', chatMsg)
@@ -33,8 +34,11 @@ const getSocketIdFromCookie = (to_id, io) => {
   const connectedClient = io.sockets.connected
   for (let key in connectedClient) {
     if (connectedClient[key].handshake.headers.cookie) {
-      //console.log(connectedClient[key].handshake.headers.cookie)
-      const cookies = connectedClient[key].handshake.headers.cookie.substring(7, 31)
+      console.log(connectedClient[key].handshake.headers.cookie)
+      const cookies = connectedClient[key].handshake.headers.cookie
+        .match(/userId=\w*;/).
+        toString().
+        replace(/userId=|;/g,'')
       if (cookies === to_id) {
         return connectedClient[key].id
       }
